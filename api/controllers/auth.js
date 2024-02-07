@@ -44,7 +44,15 @@ export const login = (req, res) => {
         const checkPassword = bcrypt.compareSync(req.body.password, data[0].password)
 
         if (checkPassword) {
-            res.status(200).json("User logged in!")
+            const token = jwt.sign({ id: data[0].id_user}, "secretkey")
+            
+            const {password, ...others} = data[0]
+            
+            res.cookie("accessToken", token, {
+                httpOnly: true
+            })
+            .status(200)
+            .json(others);
         } else {
             res.status(400).json("Wrong password!")
         }
@@ -56,5 +64,9 @@ export const login = (req, res) => {
 
 export const logout = (req, res) => {
     //TODO
-    
+    res.clearCookie("accessToken",{
+        secure: true,
+        sameSite: "none"
+    }).status(200).json("Logged out!")
+
 }
