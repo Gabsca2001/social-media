@@ -13,8 +13,8 @@ app.use(Express.json());
 app.use(cors());
 app.use(cookieParser());
 
-app.use("/api/users", userRoutes)
 app.use("/api/auth", authRoutes)
+app.use("/api/users", userRoutes)
 app.use("/api/posts", postRoutes)
 
 app.listen(8800, () => {

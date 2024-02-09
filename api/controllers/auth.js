@@ -1,37 +1,48 @@
+import {db} from "../connect.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 export const register = (req, res) => {
     //TODO
     //check if user exists
-    const q = 'SELECT * FROM users WHERE username = ?'
+    const q = 'SELECT * FROM user WHERE username = ?'
 
     db.query(q, [req.body.username], (err, data) => {
         if (err) {
-            res.status(500).json(err)
-        } else if (data.length > 0) {
-            res.status(409).json("User already exists!")
+            return res.status(500).json(err);
+        }
+        if (data.length ) {
+            return res.status(409).json("User already exists!");
         }
 
         //create user
         const salt = bcrypt.genSaltSync(10);
         const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
-        const q = "INSERT INTO users (username, email, password, name) VALUE (?)"
+        const q = "INSERT INTO user (username, email, password, name) VALUE (?)"
 
-        const values = [[req.body.username, req.body.email, hashedPassword, req.body.name]]
+        const values = [
+            req.body.username, 
+            req.body.email, 
+            hashedPassword, 
+            req.body.name
+        ];
 
         db.query(q, [values], (err, data) => {
             if (err) {
-                res.status(500).json(err)
+                return res.status(500).json(err);
             } else {
-                res.status(200).json("User created!")
+                return res.status(200).json("User created!");
             }
-        })
+        });
 
-    })
+    });
     
-}
+};
+
 export const login = (req, res) => {
     //TODO
-    const q = 'SELECT * FROM users WHERE username = ?'
+    const q = 'SELECT * FROM user WHERE username = ?'
 
     db.query(q, [req.body.username], (err, data) => {
         if (err) {
