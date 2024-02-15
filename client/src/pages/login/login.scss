@@ -61,6 +61,20 @@
                     border-bottom: 1px solid lightgrey;
                     padding: 20px;
                 }
+                .passwordStyle{
+                    position: relative;
+                    input{
+                        padding-right: 50px;
+                    }
+                    .showPassword{
+                        position: absolute;
+                        right: 0;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        cursor: pointer;
+                    }
+                
+                }
                 button{
                     width: 50%;
                     padding: 10px;
