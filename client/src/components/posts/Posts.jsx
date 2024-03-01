@@ -1,14 +1,14 @@
 import Post from "../post/Post";
 import "./posts.scss";
 import { useQuery } from "@tanstack/react-query";
-import { makeRequest } from "../../axios";
 
-const Posts = ({id_user}) => {
-  const { isLoading, error, data } = useQuery(["posts"], () =>
-    makeRequest.get("/posts?userId="+id_user).then((res) => {
-      return res.data;
-    })
-  );
+const Posts = () => {
+  const { isLoading, error, data } = useQuery({
+    queryKey:["post"], queryFn: async() => {
+      const res = await fetch("http://localhost:8800/api/posts/")
+      return res.json();
+    }
+  });
 
   return (
     <div className="posts">
